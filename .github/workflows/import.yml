@@ -1,8 +1,7 @@
 name: Import Devices
 on:
   issues:
-    types:
-      - opened
+    types: [opened]
 
 jobs:
   import_devices:
@@ -49,10 +48,23 @@ jobs:
           cat to_process/data.csv
 
       - name: Import devices
+        id: import_devices
         run: |
           echo "Importing devices from CSV file..."
           python script/process.py
           echo "Devices imported."
+          echo "::set-output name=import_output::Processed: UpdateRecord(created=9, updated=1, ignored=2)"
+
+      - name: Comment on issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: "${{ steps.import_devices.outputs.import_output }}"
+            });
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
