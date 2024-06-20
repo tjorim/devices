@@ -41,7 +41,7 @@ jobs:
       - name: Import devices
         run: |
           echo "Importing devices from CSV file..."
-          python scripts/process.py
+          python script/process.py
           echo "Devices imported."
 
       - name: Create Pull Request
