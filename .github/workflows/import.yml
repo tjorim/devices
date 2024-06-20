@@ -1,8 +1,8 @@
 name: Import Devices
 on:
-  push:
-    branches:
-      - main
+  issues:
+    types:
+      - opened
 
 jobs:
   import_devices:
@@ -19,6 +19,18 @@ jobs:
 
       - name: Install dependencies
         run: pip install -r requirements.txt
+
+      - name: Extract CSV URL
+        id: csv_url
+        run: |
+          CSV_URL=$(echo '${{ github.event.issue.body }}' | grep -oP 'http[s]?://[^)]+.csv')
+          echo "::set-output name=url::$CSV_URL"
+
+      - name: Download CSV
+        run: curl -o to_process/data.csv '${{ steps.csv_url.outputs.url }}'
+
+      - name: Import devices
+        run: python scripts/import_devices.py --input data.csv
 
       - name: Import devices
         run: python scripts/import_devices.py
