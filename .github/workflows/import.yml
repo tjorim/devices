@@ -35,7 +35,7 @@ jobs:
       - name: Download CSV
         run: |
           echo "Downloading CSV file..."
-          curl -o to_process/data.csv '${{ steps.csv_url.outputs.url }}'
+          curl -L '${{ steps.csv_url.outputs.url }}' -o to_process/data.csv
           echo "CSV file downloaded."
 
       - name: Print location and folder contents
