@@ -18,19 +18,27 @@ jobs:
           python-version: 3.x
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: |
+          echo "Installing dependencies..."
+          pip install -r requirements.txt
 
       - name: Extract CSV URL
         id: csv_url
         run: |
+          echo "Issue body: '${{ github.event.issue.body }}'"
+          echo "Extracting CSV URL from issue body..."
           CSV_URL=$(echo '${{ github.event.issue.body }}' | grep -oP 'http[s]?://[^)]+.csv')
+          echo "CSV URL: $CSV_URL"
           echo "::set-output name=url::$CSV_URL"
 
       - name: Download CSV
-        run: curl -o to_process/data.csv '${{ steps.csv_url.outputs.url }}'
+        run: |
+          echo "Downloading CSV file..."
+          curl -o to_process/data.csv '${{ steps.csv_url.outputs.url }}'
+          echo "CSV file downloaded."
 
       - name: Import devices
-        run: python scripts/import_devices.py --input data.csv
-
-      - name: Import devices
-        run: python scripts/import_devices.py
+        run: |
+          echo "Importing devices from CSV file..."
+          python scripts/import_devices.py
+          echo "Devices imported."
