@@ -37,9 +37,17 @@ jobs:
           echo "Downloading CSV file..."
           curl -o to_process/data.csv '${{ steps.csv_url.outputs.url }}'
           echo "CSV file downloaded."
+
+      - name: Print location and folder contents
+        run: |
+          echo "Current location: $PWD"
+          echo "Folder contents:"
+          ls -la
+          echo "Data folder contents:"
+          ls -la to_process
           echo "Printing CSV file contents..."
           cat to_process/data.csv
-        
+
       - name: Import devices
         run: |
           echo "Importing devices from CSV file..."
