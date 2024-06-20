@@ -31,7 +31,11 @@ jobs:
           echo "Downloading CSV file..."
           curl -L '${{ steps.csv_url.outputs.csv_url }}' -o to_process/data.csv
           echo "Importing devices from CSV file..."
-          echo "output=$(python script/process.py)" >> $GITHUB_OUTPUT
+          output=$(python script/process.py)
+          output="${output//'%'/'%25'}"
+          output="${output//$'\n'/'%0A'}"
+          output="${output//$'\r'/'%0D'}"
+          echo "output=$output" >> $GITHUB_OUTPUT
 
       - name: Comment on issue
         uses: actions/github-script@v7
