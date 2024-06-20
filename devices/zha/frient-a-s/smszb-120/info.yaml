@@ -3,14 +3,13 @@ has_configuration_url: false
 has_suggested_area: false
 is_via_device: false
 is_works_with_ha_device: false
-manufacturer_name: IKEA of Sweden
-manufacturer_raw: IKEA of Sweden
-model_name: Remote Control N2
-model_raw: Remote Control N2
+manufacturer_name: frient A/S
+manufacturer_raw: frient A/S
+model_name: SMSZB-120
+model_raw: SMSZB-120
 same_as: null
 versions:
-- software: '0x02040005'
-- software: '0x02040011'
+- software: '0x00040002'
 via_devices:
 - hw_version: null
   integration: zha
