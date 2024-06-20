@@ -35,6 +35,16 @@ jobs:
           output="${output//$'\n'/'%0A'}"
           echo "output=${output#*%0A%0A}" >> $GITHUB_OUTPUT
 
+      - name: Create Pull Request
+        id: create_pr
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: "Import devices from issue #${{ github.event.issue.number }}"
+          title: "Import devices from issue #${{ github.event.issue.number }}"
+          body: "This pull request imports devices from a CSV file linked in issue #${{ github.event.issue.number }}.\n\n${{ steps.import_devices.outputs.output }}"
+          branch: "import-devices-${{ github.event.issue.number }}"
+          base: "main"
+
       - name: Comment on issue
         uses: actions/github-script@v7
         with:
@@ -43,14 +53,6 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: "${{ steps.import_devices.outputs.output }}"
+              body: "${{ steps.import_devices.outputs.output }}\n\nCreated pull request #${{ steps.create_pr.outputs.pull-request-number }}."
             });
 
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v6
-        with:
-          commit-message: "Import devices from issue #${{ github.event.issue.number }}"
-          title: "Import devices from issue #${{ github.event.issue.number }}"
-          body: "This pull request imports devices from a CSV file linked in issue #${{ github.event.issue.number }}.\n\n${{ steps.import_devices.outputs.output }}"
-          branch: "import-devices-${{ github.event.issue.number }}"
-          base: "main"
