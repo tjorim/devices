@@ -31,8 +31,7 @@ jobs:
           echo "Downloading CSV file..."
           curl -L '${{ steps.csv_url.outputs.csv_url }}' -o to_process/data.csv
           echo "Importing devices from CSV file..."
-          output=$(python script/process.py)
-          output="${output//$'\n'/'%0A'}"
+          output="${$(python script/process.py)//$'\n'/'%0A'}"
           echo "output=${output#*%0A%0A}" >> $GITHUB_OUTPUT
 
       - name: Create Pull Request
