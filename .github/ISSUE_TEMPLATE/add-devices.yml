@@ -1,0 +1,20 @@
+name: Add devices
+description: Easily add your devices by filling out this form.
+title: "Add devices"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to add your devices!
+        Copy and past the template below on the page.
+  - type: textarea
+    id: csv
+    attributes:
+      label: Template output
+      description: Please copy and paste the output when using the Developer Tools to render the template. This will be automatically formatted into code, so no need for backticks.
+      render: csv
+    validations:
+      required: true
+- type: markdown
+  attributes:
+    value: "Thanks for completing our form!"
